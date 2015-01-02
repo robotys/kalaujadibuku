@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>KALAUJADIBUKU</title>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script>
 		var stop_feeding = false;
-		var total_feed = 0;
+		var total_status = 0;
+		var total_words = 0;
+		var total_books = 0;
+		var per_book = 25000; // 25000 words per book
 		var last_next = '';
 		var last_response;
 		// load fb sdk
 		window.fbAsyncInit = function() {
+			
+
 			FB.init({
 				appId      : '1567024923535252',
 				xfbml      : false,
@@ -20,11 +25,17 @@
 			// run code here
 			$(document).ready(function(){
 				
-				FB.login(function(){
+				$('.akses_fb').on('click', function(){
+					FB.login(function(){
+						
+						// get_feed();
 					
+					}, {scope: 'read_stream'});
+				});
+
+				$('.start_feed').on('click', function(){
 					get_feed();
-				
-				}, {scope: 'read_stream'});
+				});
 
 			});
 		};
@@ -39,9 +50,12 @@
 
 
 		function get_feed(next){
+
+			$('.status > i').html('<img src="loading.gif"/> <br/>');
+
 			// console.log(stop_feeding);
 			if(stop_feeding == false){
-				if(next == undefined) next = '/me/feed?limit=1000&fields=message';
+				if(next == undefined) next = '/me/feed?limit=1000&fields=message&from=me()';
 				FB.api(
 				    next,
 				    function (response) {
@@ -50,12 +64,22 @@
 				        if(response.paging != undefined){
 				        	// console.log('fetch '+response.data.length,'paging: ',response.paging.next);	
 				        	// console.log(response);
-					        total_feed = total_feed+response.data.length;
-					        var status = 'total fetched: '+total_feed+'. Next batch ...';
-					        // console.log('bytes: '+ $('.feeds').html().length);
-					        $('.status').html(status);
+					        total_status = total_status+response.data.length;
 
-					        var title = '('+total_feed+') WALLFETCH';
+					        $.each(response.data, function(index, obj){
+					        	if(obj.message != undefined){
+					        		total_words = total_words+obj.message.split(' ').length;
+					        	}
+					        });
+
+					        total_books = (total_words/per_book).toFixed(2);
+					        var status = 'total fetched: '+total_status+'. Next batch ...';
+					        // console.log('bytes: '+ $('.feeds').html().length);
+					        $('.total_status').html(total_status);
+					        $('.total_words').html(total_words);
+					        $('.total_book').html(total_books);
+
+					        var title = '('+total_status+') WALLFETCH';
 					        $('title').html(title);
 					        show_feed(response);
 					        get_feed(response.paging.next);
@@ -75,7 +99,7 @@
 				        	});
 				        	// get_feed(last_next);
 
-				        	// $('.status').html('Done! Total fetched: '+total_feed);
+				        	// $('.status').html('Done! Total fetched: '+total_status);
 				        	// $('.feed_switch').hide();
 				        } 
 
@@ -96,6 +120,7 @@
 
 		$(document).ready(function(){
 			$('#feed_switch').on('click', function(){
+				$('.status > i').html('');
 				stop_feeding = true;
 			});
 		});
@@ -124,6 +149,16 @@
     		background: #ccc;
     		padding: 8px;
     		width: 100%;
+    		box-sizing: border-box;
+    	}
+
+    	.status span{
+    		font-weight: bold;
+    		font-size: 1.5em;
+    	}
+
+    	ol, li{
+    		text-align: left;
     	}
     </style>
 
@@ -132,16 +167,23 @@
 
 <div class="center"><div class="wrap">
 	
+	<img src="1024x1024.jpg" style="width: 60px; height: auto; border-radius: 50%; margin-top:50px">
+	<h1>KALAUJADIBUKU</h1>
+	<p>Pasti pernah terfikir, berapa buah bukukah yang akan terhasil kalau semua status FB kita dijadikan buku? Jangan tertanya-tanya lagi! Klik Butang berikut mengikut turutan:</p>
 
-	<h1>Get My FB Wall Status</h1>
-	<p>As the name indicates, give us your fb permission and we will get all of your wall fb status. Then you can just select all and save it into a text file or word for further processing</p>
+	<p><button class="akses_fb">1) Akses FB &raquo;</button> &nbsp; <button class="start_feed">2) Mula Kira &raquo;</button> &nbsp; <button id="feed_switch">(Jika Perlu) Berhenti &raquo;</button> &nbsp; <button class="akses_fb" id="feed_switch">Share di FB &raquo;</button></p>
 
-	<p><span class="status"></span> <br/> <button id="feed_switch">stop feed</button>
-	</p>
+	<p class="status">
+		<i></i>
+		Jumlah Status: <span class="total_status">000</span> 
+						<br/> Jumlah Perkataan: <span class="total_words">00000000</span>
+						<br/> Jumlah Buku: <span class="total_book">00</span></p>
 
-	<textarea class="feeds" style="width: 480px; height: 500px;">
-		
-	</textarea>
+	<textarea class="feeds" style="width: 480px; height: 300px;"></textarea>
+
+	<h1>Dari Status FB Menjadi Buku</h1>
+	<p>Alangkah ruginya status kita jika ia tidak dirancang. Ia habis begitu sahaja. Ia hilang dihakis masa.</p>
+	<p>Seminar "Dari Status FB Menjadi Buku" akan berkongsi tentang cara menyusun status, menulis di FB dan merancang kejayaan penerbitan buku daripada status-status FB kita. Klik link <a href="#">Dari Status FB Menjadi Buku</a> untuk keterangan lanjut</p>
 </div></div>
 
 </body>
