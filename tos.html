@@ -2,112 +2,13 @@
 <html>
 <head>
 	<title></title>
-	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script>
-		var stop_feeding = false;
-		var total_feed = 0;
-		var last_next = '';
-		var last_response;
-		// load fb sdk
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId      : '1567024923535252',
-				xfbml      : false,
-				version    : 'v2.1',
-				status	   : true
-			});
-
-			// run code here
-			$(document).ready(function(){
-				
-				FB.login(function(){
-					
-					get_feed();
-				
-				}, {scope: 'read_stream'});
-
-			});
-		};
-
-		(function(d, s, id){
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {return;}
-			js = d.createElement(s); js.id = id;
-			js.src = "//connect.facebook.net/en_US/sdk.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-
-
-		function get_feed(next){
-			// console.log(stop_feeding);
-			if(stop_feeding == false){
-				if(next == undefined) next = '/me/feed?limit=1000&fields=message';
-				FB.api(
-				    next,
-				    function (response) {
-				      if (response && !response.error) {
-				        /* handle the result */
-				        if(response.paging != undefined){
-				        	// console.log('fetch '+response.data.length,'paging: ',response.paging.next);	
-				        	// console.log(response);
-					        total_feed = total_feed+response.data.length;
-					        var status = 'total fetched: '+total_feed+'. Next batch ...';
-					        // console.log('bytes: '+ $('.feeds').html().length);
-					        $('.status').html(status);
-
-					        var title = '('+total_feed+') WALLFETCH';
-					        $('title').html(title);
-					        show_feed(response);
-					        get_feed(response.paging.next);
-					        last_next = next;
-					        last_response = response;
-				        } 
-				        else{
-							// kalau rosak, run manually!
-				        	console.log('Last: '+last_next, last_response);
-				        	console.log('Now: '+next, response);
-				        	// console.log('bytes: '+ $('.feeds').html().length);
-
-				        	$.get(last_next, function(resp){
-				        		console.log(resp);
-				        		// show_feed(resp);
-					        	// get_feed(resp.paging.next);
-				        	});
-				        	// get_feed(last_next);
-
-				        	// $('.status').html('Done! Total fetched: '+total_feed);
-				        	// $('.feed_switch').hide();
-				        } 
-
-				      }
-				    }
-				);
-			}
-		}
-
-		function show_feed(response){
-			$.each(response.data, function(index,object){
-				if(object.message !== undefined){
-					var feed = ''+(object.message)+'\n\n___________________________________\n\n\n';
-					$('.feeds').append(feed);
-				}
-			});
-		}
-
-		$(document).ready(function(){
-			$('#feed_switch').on('click', function(){
-				stop_feeding = true;
-			});
-		});
-		
-    </script>
-
+	
     <style>
     	body{
     		font-family: sans-serif;
     		font-size: 16px;
     		color: #444;
-    		text-align: center;
+    		text-align: left;
     	}
 
     	.center{
@@ -133,13 +34,48 @@
 <div class="center"><div class="wrap">
 	
 
-	<h1>Get My FB Wall Status</h1>
-	<p>As the name indicates, give us your fb permission and we will get all of your wall fb status. Then you can just select all and save it into a text file or word for further processing</p>
+	<h1>Terms of Service ("Terms")</h1>
+	<p>Last updated: January 02, 2015</p>
 
-	<p><span class="status"></span> <br/> <button id="feed_switch">stop feed</button>
-	</p>
+	<p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the http://robotys.net/kalaujadibuku website (the "Service") operated by KALAUJADIBUKU ("us", "we", or "our").</p>
 
-	<textarea class="feeds" style="width: 480px; height: 500px;">
+	<p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service.</p>
+
+	<p>By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service.</p>
+
+
+	<p><strong>Links To Other Web Sites</strong></p>
+
+	<p>Our Service may contain links to third-party web sites or services that are not owned or controlled by KALAUJADIBUKU.</p>
+
+	<p>KALAUJADIBUKU has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that KALAUJADIBUKU shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such web sites or services.</p>
+
+	<p>We strongly advise you to read the terms and conditions and privacy policies of any third-party web sites or services that you visit.</p>
+
+	<p><strong>Termination</strong></p>
+
+	<p>We may terminate or suspend access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+
+	<p>All provisions of the Terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity and limitations of liability.</p>
+
+
+	<p><strong>Governing Law</strong></p>
+
+	<p>These Terms shall be governed and construed in accordance with the laws of Malaysia, without regard to its conflict of law provisions.</p>
+
+	<p>Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect. These Terms constitute the entire agreement between us regarding our Service, and supersede and replace any prior agreements we might have between us regarding the Service.</p>
+
+	<p><strong>Changes</strong></p>
+
+	<p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will try to provide at least 30 days notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
+
+	<p>By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, please stop using the Service.</p>
+
+	<p>Created with permission from the TermsFeed.com Terms of Service generator.</p>
+
+	<p><strong>Contact Us</strong></p>
+
+	<p>If you have any questions about these Terms, please contact us.</p>
 		
 	</textarea>
 </div></div>
