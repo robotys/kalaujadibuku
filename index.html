@@ -57,6 +57,11 @@
 					// console.log(string);
 					$('#share_description').attr('content', string);	
 					// console.log($('#share_description').attr('content'));
+
+					FB.ui({
+					  method: 'share',
+					  href: 'http://robotys.net/kalaujadibuku',
+					}, function(response){});
 				});
 
 			});
