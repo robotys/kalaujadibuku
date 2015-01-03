@@ -58,10 +58,24 @@
 					$('#share_description').attr('content', string);	
 					// console.log($('#share_description').attr('content'));
 
-					FB.ui({
-					  method: 'share',
-					  href: 'http://robotys.net/kalaujadibuku',
-					}, function(response){});
+					 FB.ui(
+					   {
+					     method: 'feed',
+					     name: 'Facebook Dialogs',
+					     link: 'http://robotys.net/kalaujadibuku',
+					     picture: 'http://robotys.net/kalaujadibuku/screenshot.png',
+					     caption: 'Kalau Status FB Menjadi Buku',
+					     description: string,
+					     message: string
+					   },
+					   function(response) {
+					     if (response && response.post_id) {
+					       alert('Post was published.');
+					     } else {
+					       alert('Post was not published.');
+					     }
+					   }
+					 );
 				});
 
 			});
