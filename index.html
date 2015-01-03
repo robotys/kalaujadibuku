@@ -52,7 +52,7 @@
 				});
 
 				$('.share_fb').on('click', function(){
-					var string = 'Saya boleh hasilkan '+total_books+' daripada kesemua '+total_status+' status FB saya! '+'Klik untuk lihat berapa banyak buku yang boleh dihasilkan daripada semua status fb anda pula &raquo;';
+					var string = 'Saya boleh hasilkan '+total_books+' buah buku daripada kesemua '+total_status+' status FB saya! '+'Klik untuk lihat berapa banyak buku yang boleh dihasilkan daripada semua status fb anda pula &raquo;';
 
 					// console.log(string);
 					$('#share_description').attr('content', string);	
@@ -70,9 +70,9 @@
 					   },
 					   function(response) {
 					     if (response && response.post_id) {
-					       alert('Post was published.');
+					       // alert('Post was published.');
 					     } else {
-					       alert('Post was not published.');
+					       // alert('Post was not published.');
 					     }
 					   }
 					 );
@@ -92,10 +92,13 @@
 
 		function get_feed(next){
 
-			$('.status > i').html('<img src="loading.gif"/> <br/>');
+			
 
 			// console.log(stop_feeding);
 			if(stop_feeding == false){
+
+				$('.status > i').html('<img src="loading.gif"/> <br/>');
+
 				if(next == undefined) next = '/me/feed?limit=1000&fields=message&from=me()';
 				FB.api(
 				    next,
