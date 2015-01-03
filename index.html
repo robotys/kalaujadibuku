@@ -2,6 +2,12 @@
 <html>
 <head>
 	<title>KALAUJADIBUKU</title>
+
+	<meta property="og:url" content="http://robotys.net/kalaujadibuku" /> 
+	<meta property="og:title" content="KALAU FB JADI BUKU" />
+	<meta property="og:description" content="Klik untuk lihat berapa banyak buku yang boleh dihasilkan daripada semua status fb anda &raquo;" id="share_description"/> 
+	<meta property="og:image" content="http://robotys.net/kalaujadibuku/screenshot.png" /> 
+
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script>
 		var stop_feeding = false;
@@ -14,6 +20,8 @@
 		// load fb sdk
 		window.fbAsyncInit = function() {
 			
+			// live: 1567024923535252
+			// test: 1567165170187894
 
 			FB.init({
 				appId      : '1567024923535252',
@@ -29,12 +37,26 @@
 					FB.login(function(){
 						
 						// get_feed();
+						$('.start_feed, #feed_switch, .share_fb').prop('disabled', false);
 					
 					}, {scope: 'read_stream'});
 				});
 
 				$('.start_feed').on('click', function(){
 					get_feed();
+				});
+
+				$('#feed_switch').on('click', function(){
+					$('.status > i').html('');
+					stop_feeding = true;
+				});
+
+				$('.share_fb').on('click', function(){
+					var string = 'Saya boleh hasilkan '+total_books+' daripada kesemua '+total_status+' status FB saya! '+'Klik untuk lihat berapa banyak buku yang boleh dihasilkan daripada semua status fb anda pula &raquo;';
+
+					// console.log(string);
+					$('#share_description').attr('content', string);	
+					// console.log($('#share_description').attr('content'));
 				});
 
 			});
@@ -118,12 +140,6 @@
 			});
 		}
 
-		$(document).ready(function(){
-			$('#feed_switch').on('click', function(){
-				$('.status > i').html('');
-				stop_feeding = true;
-			});
-		});
 		
     </script>
 
@@ -171,7 +187,7 @@
 	<h1>KALAUJADIBUKU</h1>
 	<p>Pasti pernah terfikir, berapa buah bukukah yang akan terhasil kalau semua status FB kita dijadikan buku? Jangan tertanya-tanya lagi! Klik Butang berikut mengikut turutan:</p>
 
-	<p><button class="akses_fb">1) Akses FB &raquo;</button> &nbsp; <button class="start_feed">2) Mula Kira &raquo;</button> &nbsp; <button id="feed_switch">(Jika Perlu) Berhenti &raquo;</button> &nbsp; <button class="akses_fb" id="feed_switch">Share di FB &raquo;</button></p>
+	<p><button class="akses_fb">1) Akses FB &raquo;</button> &nbsp; <button class="start_feed" disabled="disabled">2) Mula Kira &raquo;</button> &nbsp; <button id="feed_switch" disabled="disabled">(Jika Perlu) Berhenti &raquo;</button> &nbsp; <button class="share_fb" disabled='disabled'>Share di FB &raquo;</button></p>
 
 	<p class="status">
 		<i></i>
